@@ -1,0 +1,7 @@
+while True:
+    print(7)
+    for i in range(16):
+    
+        neo.fill([0,0,0])
+        neo[i] = [25,138,37]
+        neo.write ()
