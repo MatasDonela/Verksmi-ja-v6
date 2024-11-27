@@ -8,24 +8,23 @@ from neopixel import NeoPixel
 # Joystick Pins
 xVal=ADC(Pin(5))
 yVal=ADC(Pin(4))
-zVal=Pin(12,Pin.IN,Pin.PULL_UP) 
 
 xVal.atten(ADC.ATTN_11DB)
 yVal.atten(ADC.ATTN_11DB)
 xVal.width(ADC.WIDTH_12BIT)
 yVal.width(ADC.WIDTH_12BIT)
 
-roll_button = Pin(9, Pin.IN, Pin.PULL_UP) #button to press when you want to roll the wheel(neopixel)
-finished_button = Pin(10, Pin.IN, Pin.PULL_UP) #button to press when you finished your turn
+roll_button = Pin(16, Pin.IN, Pin.PULL_UP) #button to press when you want to roll the wheel(neopixel)
+finished_button = Pin(17, Pin.IN, Pin.PULL_UP) #button to press when you finished your turn
 
-star_a_button = Pin(11, Pin.IN, Pin.PULL_UP)
-star_b_button = Pin(12, Pin.IN, Pin.PULL_UP)
-star_c_button = Pin(13, Pin.IN, Pin.PULL_UP)
+star_a_button = Pin(6, Pin.IN, Pin.PULL_UP)
+star_b_button = Pin(7, Pin.IN, Pin.PULL_UP)
+star_c_button = Pin(15, Pin.IN, Pin.PULL_UP)
 
-buzzer = PWM(Pin(14), freq=100)
+buzzer = PWM(Pin(18), freq=100)
 
-pin = Pin(45, Pin.OUT)
-neo = NeoPixel(pin, 15)
+pin = Pin(8, Pin.OUT)
+neo = NeoPixel(pin, 16)
 
 '''star_a = Pin(16, Pin.OUT)
 star_b = Pin(17, Pin.OUT)
@@ -43,14 +42,14 @@ segments_score = {
 }
 
 segments_player = {
-    'a': Pin(35, Pin.OUT),
-    'b': Pin(0, Pin.OUT),
-    'c': Pin(45, Pin.OUT),
-    'd': Pin(48, Pin.OUT),
-    'e': Pin(47, Pin.OUT),
-    'f': Pin(21, Pin.OUT),
-    'g': Pin(36, Pin.OUT),
-    'dp': Pin(19, Pin.OUT)
+    'a': Pin(3, Pin.OUT),
+    'b': Pin(46, Pin.OUT),
+    'c': Pin(9, Pin.OUT),
+    'd': Pin(10, Pin.OUT),
+    'e': Pin(11, Pin.OUT),
+    'f': Pin(12, Pin.OUT),
+    'g': Pin(13, Pin.OUT),
+    'dp': Pin(14, Pin.OUT)
 }
 
 num_to_segments = {
