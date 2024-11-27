@@ -9,7 +9,6 @@ players = []
 turn = 0
 turn_count = 0
 
-game_setup = True
 choosing_players = True
 
 while True:
