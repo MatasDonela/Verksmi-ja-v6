@@ -19,9 +19,64 @@ finish_button = Pin(1, Pin.IN, Pin.PULL_UP)  # button to press when you finished
 roll_light = Pin(41, Pin.OUT)
 finish_light= Pin(2, Pin.OUT)
 
-star_1_light = Pin(18)
-star_2_light = Pin(17)
-star_3_light = Pin(40)
+star_1_light = Pin(17, Pin.OUT)
+star_2_light = Pin(40, Pin.OUT)
+star_3_light = Pin(18, Pin.OUT)
+
+# Reed switch pin
+reed_switch_1= Pin(15, Pin.IN, Pin.PULL_UP)  # Use internal pull-up resistor
+reed_switch_2 = Pin(7, Pin.IN, Pin.PULL_UP)  # Use internal pull-up resistor
+reed_switch_3 = Pin(6, Pin.IN, Pin.PULL_UP)  # Use internal pull-up resistor
+current_star = 0
+add_1_point_for_a_previous_player=False
+def check_reed_switch_1():
+    global current_star
+    if current_star == 1:
+        if reed_switch_1.value() == 0:  # Active state (switch closed)
+            print("Magnet detected! 111")
+            star_1_light.value(0)
+            waiting_whatever=False
+            players[turn][1]+=1
+            current_star = random.randint(1,3)
+        else:
+            print("No magnet detected.")
+        
+def check_reed_switch_2():
+    global current_star
+    if current_star == 2:
+        if reed_switch_2.value() == 0:  # Active state (switch closed)
+            star_2_light.value(0)
+            players[turn][1]+=1
+            waiting_whatever=False
+            print("Magnet detected! 222")
+            
+            current_star = random.randint(1,3)
+        else:
+            print("No magnet detected.")
+def check_reed_switch_3():
+    global current_star
+    
+    if current_star == 3:
+        if reed_switch_3.value() == 0:  # Active state (switch closed)
+            print("Magnet detected! 333")
+            players[turn][1]+=1
+            waiting_whatever=False
+            star_3_light.value(0)
+            current_star = random.randint(1,3)
+        else:
+            print("No magnet detected.")
+
+
+        sleep_ms(500)  # Check every 100ms
+
+
+
+
+
+
+star_3_light.value(0)
+star_2_light.value(0)
+star_1_light.value(0)
 
 current_star = 0
 
@@ -99,7 +154,7 @@ finish_light.value(0)
 
 neo.fill([0, 0, 0])
 neo.write()
-
+turn_extra=0
 turn = 0
 turn_count = 0
 player_amount=0
@@ -113,7 +168,9 @@ player_amount=0
 waiting_for_the_player_choice = True
 player_amount_choice_allowed = False
 checkingdisplays = True
+current_star = random.randint(1,3)
 while True:
+    print(players)
     waiting_for_the_finish_button_to_be_pressed=True
     waiting_for_the_roll_button_to_be_pressed=True
     while waiting_for_the_player_choice:
@@ -142,6 +199,7 @@ while True:
             player_amount=2
         display_number_player(player_amount)
     turn += 1
+    turn_extra+=1
     turn_count += 1
     '''while checkingdisplays == True:
         score_or_player = int(input('score(1) or player(2)'))
@@ -159,16 +217,19 @@ while True:
             checkingdisplays = False'''
     if turn > player_amount:
         turn = 1
+    if turn_extra==player_amount:
+        turn_extra=0
     display_number_player(turn)
     print("turn =", turn_count)
     
-    current_star = random.randint(1,3)
+    
     if current_star == 1:
         star_1_light.value(1)
-    if current_star == 2:
+    elif current_star == 2:
         star_2_light.value(1)
-    if current_star == 3:
+    elif current_star == 3:
         star_3_light.value(1)
+    print(current_star)
     
     
     for i in range(len(players)):
@@ -178,7 +239,9 @@ while True:
             finish_light.value(0)
             print("player", i + 1, "is moving")
             print("player", i + 1, "has", players[i][1], "points")
+            print(add_1_point_for_a_previous_player)
             display_number_score(players[i][1])
+            
             sleep_ms(1000)
             while waiting_for_the_roll_button_to_be_pressed:
                 roll_light.value(1)
@@ -277,9 +340,14 @@ while True:
                         sleep_ms(300)
                         buzzer.duty(0)
             sleep_ms(1000)
-            
+            waiting_whatever=True
             while waiting_for_the_finish_button_to_be_pressed:
+                add_1_point_for_a_previous_player=False
                 finish_light.value(1)
+                check_reed_switch_1()
+                check_reed_switch_2()
+                check_reed_switch_3()
+                sleep_ms(100)
                 if finish_button.value() == 0:
                     
                     waiting_for_the_finish_button_to_be_pressed=False
