@@ -19,10 +19,11 @@ finish_button = Pin(1, Pin.IN, Pin.PULL_UP)  # button to press when you finished
 roll_light = Pin(41, Pin.OUT)
 finish_light= Pin(2, Pin.OUT)
 
+star_1_light = Pin(18)
+star_2_light = Pin(17)
+star_3_light = Pin(40)
 
-star_a_button = Pin(6, Pin.IN, Pin.PULL_UP)
-star_b_button = Pin(7, Pin.IN, Pin.PULL_UP)
-star_c_button = Pin(15, Pin.IN, Pin.PULL_UP)
+current_star = 0
 
 buzzer = PWM(Pin(39), freq=10000, duty=0)
 
@@ -161,6 +162,15 @@ while True:
     display_number_player(turn)
     print("turn =", turn_count)
     
+    current_star = random.randint(1,3)
+    if current_star == 1:
+        star_1_light.value(1)
+    if current_star == 2:
+        star_2_light.value(1)
+    if current_star == 3:
+        star_3_light.value(1)
+    
+    
     for i in range(len(players)):
         if players[i][0] == turn:  # THE CODE HERE RUNS FOR THE PLAYER WHOS TURN IT IS
             neo.fill([0, 0, 0])
@@ -215,9 +225,11 @@ while True:
                         neo.write()
                         buzzer.duty(500)
                         buzzer.freq(523)
-                        sleep_ms(250)
-                        buzzer.duty(659)
-                        sleep_ms(250)
+                        sleep_ms(100)
+                        buzzer.freq(659)
+                        sleep_ms(100)
+                        buzzer.duty(784)
+                        sleep_ms(300)
                         buzzer.duty(0)
                     elif roll == 5 or roll == 6 or roll == 7 or roll == 8:
                         neo.fill([0, 0, 0])
@@ -228,9 +240,11 @@ while True:
                         neo.write()
                         buzzer.duty(500)
                         buzzer.freq(523)
-                        sleep_ms(250)
-                        buzzer.duty(659)
-                        sleep_ms(250)
+                        sleep_ms(100)
+                        buzzer.freq(659)
+                        sleep_ms(100)
+                        buzzer.duty(784)
+                        sleep_ms(300)
                         buzzer.duty(0)
                     elif roll == 9 or roll == 10 or roll == 11 or roll == 12:
                         neo.fill([0, 0, 0])
@@ -241,9 +255,11 @@ while True:
                         neo.write()
                         buzzer.duty(500)
                         buzzer.freq(523)
-                        sleep_ms(250)
-                        buzzer.duty(659)
-                        sleep_ms(250)
+                        sleep_ms(100)
+                        buzzer.freq(659)
+                        sleep_ms(100)
+                        buzzer.duty(784)
+                        sleep_ms(300)
                         buzzer.duty(0)
                     elif roll == 13 or roll == 14 or roll == 15 or roll == 0:
                         neo.fill([0, 0, 0])
@@ -254,17 +270,28 @@ while True:
                         neo.write()
                         buzzer.duty(500)
                         buzzer.freq(523)
-                        sleep_ms(250)
-                        buzzer.duty(659)
-                        sleep_ms(250)
+                        sleep_ms(100)
+                        buzzer.freq(659)
+                        sleep_ms(100)
+                        buzzer.duty(784)
+                        sleep_ms(300)
                         buzzer.duty(0)
             sleep_ms(1000)
             
             while waiting_for_the_finish_button_to_be_pressed:
                 finish_light.value(1)
                 if finish_button.value() == 0:
+                    
                     waiting_for_the_finish_button_to_be_pressed=False
                     finish_light.value(0)
+                    buzzer.duty(500)
+                    buzzer.freq(261)
+                    sleep_ms(170)
+                    buzzer.freq(523)
+                    sleep_ms(70)
+                    buzzer.freq(261)
+                    sleep_ms(170)
+                    buzzer.duty(0)
                     continue
 """ 
             give_star = input("Give a star? ")
