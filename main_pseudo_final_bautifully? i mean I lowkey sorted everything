@@ -143,10 +143,10 @@ def display_number_player(num):
 #waiting for the roll button
 def wait_for_roll_button():
     while roll_button.value() == 1:  # Wait until button is pressed
-        sleep_ms(10)  # Check every 10ms
+        sleep_ms(100)  # Check every 10ms
     sleep_ms(50)  # Debounce delay
     while roll_button.value() == 0:  # Wait until button is released
-        sleep_ms(10)
+        sleep_ms(1000)
 
 
 
